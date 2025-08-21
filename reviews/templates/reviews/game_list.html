@@ -1,0 +1,42 @@
+{% extends "reviews/base.html" %}
+
+{% block title %}
+  {% if active_genre %}{{ active_genre.name }} - hry{% else %}Seznam her{% endif %}
+{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'genre_list' %}">Žánry</a></li>
+    {% if active_genre %}
+      <li class="breadcrumb-item active" aria-current="page">{{ active_genre.name }}</li>
+    {% else %}
+      <li class="breadcrumb-item active" aria-current="page">Všechny hry</li>
+    {% endif %}
+  </ol>
+</nav>
+
+<h1 class="mb-3">
+  {% if active_genre %}{{ active_genre.name }} – hry{% else %}Seznam her{% endif %}
+</h1>
+
+<div class="row">
+  {% for game in games %}
+    <div class="col-md-4">
+      <div class="card mb-3">
+        {% if game.image %}
+          <img src="{{ game.image.url }}" class="card-img-top" alt="{{ game.title }}">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ game.title }}</h5>
+          <p class="card-text">{{ game.description|truncatewords:20 }}</p>
+          <p><strong>Cena:</strong> {{ game.price }} Kč</p>
+          <a href="{% url 'game_detail' game.pk %}" class="btn btn-primary">Detail</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>V tomto žánru zatím žádné hry.</p>
+  {% endfor %}
+</div>
+{% endblock %}
