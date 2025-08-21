@@ -3,6 +3,7 @@ from django.db.models import Q, Prefetch, Count
 from .models import Game, Review, Genre
 from .forms import ReviewForm
 
+
 # Domovská stránka: seznam žánrů
 def genre_list(request):
     genres = Genre.objects.annotate(num_games=Count('games')).order_by('name')
@@ -64,3 +65,5 @@ def game_detail(request, pk):
         'reviews': game.reviews.all().order_by('-created_at'),
         'form': form,
     })
+    
+
