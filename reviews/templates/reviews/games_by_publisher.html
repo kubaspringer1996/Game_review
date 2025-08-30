@@ -1,0 +1,17 @@
+<h2>Hry od vydavatele: {{ publisher.name }}</h2>
+
+<ul>
+  {% for game in games %}
+    <li>
+      <strong>{{ game.title }}</strong> 
+      – žánry: 
+      {% for genre in game.genres.all %}
+        {{ genre.name }}{% if not forloop.last %}, {% endif %}
+      {% empty %}
+        žádné žánry
+      {% endfor %}
+    </li>
+  {% empty %}
+    <li>Tento vydavatel zatím nemá žádné hry.</li>
+  {% endfor %}
+</ul>
