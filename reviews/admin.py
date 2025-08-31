@@ -15,7 +15,7 @@ class GenreAdmin(admin.ModelAdmin):
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
 	list_display = ('title','release_date','price')
-	fields = ('title','release_date','price','description','genres','image_filename')
+	fields = ('title','release_date','price','description','genres','image_filename','wiki')
 	
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
@@ -31,6 +31,6 @@ class FavoriteAdmin(admin.ModelAdmin):
 	
 @admin.register(Wiki)
 class WikiAdmin(admin.ModelAdmin):
-	list_display = ('title','game','character_name','updated_at')
+	list_display = ('title','character_name','updated_at')
 	search_fields = ('title','character_name','content')
 	prepopulated_fields = {'slug':('title',)}

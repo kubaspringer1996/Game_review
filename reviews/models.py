@@ -7,7 +7,18 @@ from django.utils.text import slugify
 def game_image_path(instance, filename) -> str:
 	return f"games/{slugify(instance.title)}/{filename}"
 
+class Wiki(models.Model):
+	"""Databáze pro WikiSerializer """
+	title = models.CharField(max_length=200)
+	slug = models.SlugField()
+	character_name = models.CharField(max_length=120, blank=True)
+	content = models.TextField()
+	image_filename = models.CharField(max_length=200, blank=True, null=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+
 class Publisher(models.Model):
+	"""Databáze herních vydavatelů"""
 	name = models.CharField(max_length=120, unique=True)
 	slug = models.SlugField(unique=True)
 	
@@ -15,19 +26,21 @@ class Publisher(models.Model):
 		return self.name
 		
 class Genre(models.Model):
+    """Databáze žánrů"""
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     def __str__(self) -> str:
     	return self.name
 
 class Game(models.Model):
+    """Databáze her"""
     title = models.CharField(max_length=200)
     release_date = models.DateField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField(blank=True)
     image_filename = models.CharField(max_length=200, blank=True, null=True)
     genres = models.ManyToManyField(Genre, related_name="games")
-    publisher = models.ForeignKey(Publisher, null=True, blank=True, on_delete=models.CASCADE,
+    wiki = models.ForeignKey(Wiki, null=True, blank=True, on_delete=models.CASCADE,
     related_name="games")
     
     class Meta:
@@ -59,20 +72,7 @@ class Review(models.Model):
 		ordering = ["-created_at"]
 		
 	def __str__(self) -> str:
-		return f"{self.game.title} - {self.user} ( {self.rating}/10)"
-
-
-class Wiki(models.Model):
-	"""Wiki encyklopedie ke hře"""
-	game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='wikis')
-	title = models.CharField(max_length=200)
-	slug = models.SlugField()
-	character_name = models.CharField(max_length=120, blank=True)
-	content = models.TextField()
-	image_filename = models.CharField(max_length=200, blank=True, null=True)
-	created_at = models.DateTimeField(auto_now_add=True)
-	updated_at = models.DateTimeField(auto_now=True)
-	
+		return f"{self.game.title} - {self.user} ( {self.rating}/10)"	
 
 class Favorite(models.Model):
 	"""Všechny oblíbené hry přihlášeného uživatele"""

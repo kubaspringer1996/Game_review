@@ -37,13 +37,14 @@ class MyReviewAPI(generics.ListAPIView):
 class WikiViewSet(viewsets.ModelViewSet):
 	serializer_class = WikiSerializer
 	permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+	queryset = Wiki.objects.all()	
 	
 	def get_queryset_(self):
-		qs = Wiki.Objects_select_related('game')
+		"""filtr pro id her"""
+		qs = super().get_queryset()
 		game_id = self.request.query_params.get('game')
 		if game_id:
-			qs = qs.filter(game_id=game_id)
-			return qs
+			qs = qs.filter(games__id=game_id)
+		return qs
 	
-	def perform_create(self, serializer):
-		serializer.save()
+	

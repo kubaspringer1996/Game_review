@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, Prefetch, Count
 from django.contrib.auth.decorators import login_required
-from .models import Game, Review, Genre, Favorite, Publisher
+from .models import Game, Review, Genre, Favorite, Publisher, Wiki
 from .forms import ReviewForm
 
 
@@ -19,8 +19,8 @@ def games_by_genre(request, slug):
 
     games = (
         Game.objects.filter(genres__slug=slug)
-        .select_related('publisher')
-        .prefetch_related('genres', 'wikis')
+        .select_related('wiki')
+        .prefetch_related('genres','reviews')
         .distinct()
     )
 
@@ -40,8 +40,8 @@ def game_list(request):
 
     games = (
         Game.objects.all()
-        .select_related('publisher')
-        .prefetch_related('genres', 'platforms')
+        .select_related('wiki')
+        .prefetch_related('genres', 'reviews')
     )
 
     if q:
@@ -54,10 +54,9 @@ def game_list(request):
 def game_detail(request, pk):
     qs = (
         Game.objects
-        .select_related('publisher')
+        .select_related('wiki')
         .prefetch_related(
             'genres',
-            'wikis',
             Prefetch('reviews', queryset=Review.objects.select_related('user').order_by('-created_at')),
         )
     )
