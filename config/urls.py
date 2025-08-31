@@ -19,11 +19,14 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken.views import obtain_auth_token 
+from reviews.views import signup, profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("reviews.urls")),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/signup/', signup, name='signup'),
+    path('accounts/profile/', profile, name='profile'),
+    path('', include('reviews.urls')),
     
     #API
     path('api-token-auth/', obtain_auth_token, name = 'api_token_auth'),

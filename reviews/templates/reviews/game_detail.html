@@ -74,9 +74,14 @@
     {% else %}
       <p><em>Pro přidání hodnocení se <a href="{% url 'login' %}?next={{ request.path }}">přihlas</a>.</em></p>
     {% endif %}
+    <div class="mt-4">
+    <a href="/api/wikis/" class="btn btn outline-info" target="_blank">
+    
+    	Zobrazit Wiki (api)
+    </a>
+    </div>
   </div>
 
-  <!-- Loader overlay -->
   <div id="loader" style="
     display:none;
     position:fixed;

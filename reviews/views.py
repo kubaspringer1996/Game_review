@@ -3,7 +3,21 @@ from django.db.models import Q, Prefetch, Count
 from django.contrib.auth.decorators import login_required
 from .models import Game, Review, Genre, Favorite, Publisher, Wiki
 from .forms import ReviewForm
+from django.contrib.auth.forms import UserCreationForm
 
+def signup(request):
+	if request.method == "POST":
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect ('login')
+	else:
+		form = UserCreationForm()
+	return render(request, 'registration/signup.html', {'form' : form})
+
+@login_required
+def profile(request):
+	return render(request, 'registration/profile.html')
 
 # Domovská stránka: seznam žánrů + počet her v žánru
 def genre_list(request):
