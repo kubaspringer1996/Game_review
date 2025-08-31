@@ -52,7 +52,7 @@ class Game(models.Model):
     
     @property
     def image_url(self):
-    """pokud neni obrázek výstup je placeholder.jpg"""
+    	"""pokud neni obrázek výstup je placeholder.jpg"""
     	if self.image_filename:
     		return f"/static/games/{self.image_filename}"
     	return "/static/games/placeholder.jpg"

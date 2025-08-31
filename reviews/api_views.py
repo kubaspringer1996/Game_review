@@ -11,9 +11,8 @@ class GameViewSet(viewsets.ModelViewSet):
 	
 	@action(detail=True, methods=['get','post'],
 	permission_classes = [permissions.IsAuthenticatedOrReadOnly])
-	
 	def wikis(self,request,pk=None):
-	"""filtrace wiki podle fk hry"""
+		"""filtrace wiki podle fk hry"""
 		game = self.get_object()
 		if request.method == 'GET':
 			qs = game.wikis.all().order_by('title')
