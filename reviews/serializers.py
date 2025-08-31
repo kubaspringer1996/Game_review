@@ -5,7 +5,7 @@ class GameSerializer(serializers.ModelSerializer):
 	"""api her"""
 	class Meta:
 		model = Game
-		fields = '__all__'
+		fields = ['title','description']
 
 class GenreSerializer(serializers.ModelSerializer):
 	"""api herních žánrů"""

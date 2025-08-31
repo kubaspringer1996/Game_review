@@ -4,6 +4,7 @@ from .models import Game,Genre,Review,Wiki, Publisher
 from .serializers import GameSerializer, GenreSerializer, MyReviewSerializer, WikiSerializer
 
 class GameViewSet(viewsets.ModelViewSet):
+	"""api viewset pro zobrazení všech her"""
 	queryset = Game.objects.all()
 	serializer_class = GameSerializer
 	permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -12,6 +13,7 @@ class GameViewSet(viewsets.ModelViewSet):
 	permission_classes = [permissions.IsAuthenticatedOrReadOnly])
 	
 	def wikis(self,request,pk=None):
+	"""filtrace wiki podle fk hry"""
 		game = self.get_object()
 		if request.method == 'GET':
 			qs = game.wikis.all().order_by('title')
@@ -24,10 +26,12 @@ class GameViewSet(viewsets.ModelViewSet):
 		return Response(ser.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GenreViewSet(viewsets.ModelViewSet):
+	"""api viewset pro zobrazení herních žánrů"""
 	queryset = Genre.objects.all()
 	serializer_class = GenreSerializer
 
 class MyReviewAPI(generics.ListAPIView):
+	"""api viewset pro zobrazení všech recenzí od přihlášeného uživatele"""
 	permission_classes = [permissions.IsAuthenticated]
 	serializer_class = MyReviewSerializer
 	
@@ -35,6 +39,7 @@ class MyReviewAPI(generics.ListAPIView):
 		return (Review.objects.filter(user=self.request.user).select_related('game','user'))
 
 class WikiViewSet(viewsets.ModelViewSet):
+	"""api viewset pro zobrazení informací o hře/herních postavách"""
 	serializer_class = WikiSerializer
 	permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 	queryset = Wiki.objects.all()	

@@ -5,6 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.text import slugify
 
 def game_image_path(instance, filename) -> str:
+	"""nahrání obrázků ze složky static"""
 	return f"games/{slugify(instance.title)}/{filename}"
 
 class Wiki(models.Model):
@@ -51,6 +52,7 @@ class Game(models.Model):
     
     @property
     def image_url(self):
+    """pokud neni obrázek výstup je placeholder.jpg"""
     	if self.image_filename:
     		return f"/static/games/{self.image_filename}"
     	return "/static/games/placeholder.jpg"
