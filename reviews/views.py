@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, Prefetch, Count
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from .models import Game, Review, Genre, Favorite, Publisher, Wiki
 from .forms import ReviewForm
@@ -9,8 +10,9 @@ def signup(request):
 	if request.method == "POST":
 		form = UserCreationForm(request.POST)
 		if form.is_valid():
-			form.save()
-			return redirect ('login')
+			user = form.save()
+			login(request,user)
+			return redirect ('genre_list')
 	else:
 		form = UserCreationForm()
 	return render(request, 'registration/signup.html', {'form' : form})
